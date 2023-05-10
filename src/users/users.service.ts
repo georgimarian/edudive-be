@@ -14,8 +14,8 @@ export class UsersService {
     return this.prisma.user.findMany();
   }
 
-  async findOne(id: string): Promise<User> {
-    return this.users.find((user) => user.email === id);
+  async findOne(userUniqueInput: Prisma.UserWhereUniqueInput): Promise<User> {
+    return this.prisma.user.findUnique({ where: userUniqueInput });
   }
 
   async createUser(data: Prisma.UserCreateInput): Promise<User> {

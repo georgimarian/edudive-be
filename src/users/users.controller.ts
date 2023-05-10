@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
 import { Request } from 'express';
-import { UsersService } from 'src/services/users.service';
+import { UsersService } from 'src/users/users.service';
 import { User } from 'src/user.interface';
 
 @Controller('users')
@@ -15,7 +15,7 @@ export class UsersController {
 
   @Get(':id')
   async findOne(@Param() params: { id: string }): Promise<User> {
-    return this.usersService.findOne(params.id);
+    return this.usersService.findOne({ id: Number(params.id) });
   }
 
   @Post('/createUser')

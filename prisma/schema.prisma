@@ -17,19 +17,21 @@ enum Role {
 }
 
 model User {
-  id               Int                @id @default(autoincrement())
-  email            String             @unique
-  firstName        String?
-  lastName         String?
-  role             Role               @default(STUDENT)
-  StudentToSkill   StudentOnSkill[]
-  TeacherToSubject TeacherOnSubject[]
+  id                       Int                        @id @default(autoincrement())
+  email                    String                     @unique
+  firstName                String?
+  lastName                 String?
+  role                     Role                       @default(STUDENT)
+  StudentToSkill           StudentOnSkill[]
+  TeacherToSubject         TeacherOnSubject[]
+  StudentOnMasterProgramme StudentOnMasterProgramme[]
 }
 
 model MasterProgramme {
-  id       Int                          @id @default(autoincrement())
-  name     String?
-  subjects SubjecstOnMasterProgrammes[]
+  id                       Int                          @id @default(autoincrement())
+  name                     String
+  subjects                 SubjecstOnMasterProgrammes[]
+  StudentOnMasterProgramme StudentOnMasterProgramme[]
 }
 
 model Subject {
@@ -158,4 +160,14 @@ model TeacherOnSubject {
   subjectId Int
 
   @@id([teacherId, subjectId])
+}
+
+model StudentOnMasterProgramme {
+  student           User            @relation(fields: [studentId], references: [id])
+  studentId         Int
+  MasterProgramme   MasterProgramme @relation(fields: [masterProgrammeId], references: [id])
+  masterProgrammeId Int
+  yearOfStudy       Int             @default(1)
+
+  @@id([studentId, masterProgrammeId])
 }
