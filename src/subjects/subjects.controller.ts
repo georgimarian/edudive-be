@@ -8,27 +8,28 @@ export class SubjectsController {
   constructor(private readonly subjectsService: SubjectsService) { }
 
   @Post()
-  create(@Body() createSubjectDto: CreateSubjectDto) {
+  async create(@Body() createSubjectDto: CreateSubjectDto) {
     return this.subjectsService.create(createSubjectDto);
   }
 
   @Get()
-  findAll() {
+  async findAll() {
     return this.subjectsService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.subjectsService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return this.subjectsService.findOne({ id: Number(id) });
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSubjectDto: UpdateSubjectDto) {
-    return this.subjectsService.update(+id, updateSubjectDto);
+  async update(@Param('id') id: string, @Body() updateSubjectDto: UpdateSubjectDto) {
+    return this.subjectsService.update({ where: { id: Number(id) }, data: updateSubjectDto });
   }
 
+
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.subjectsService.remove(+id);
+  async remove(@Param('id') id: string) {
+    return this.subjectsService.remove({ id: Number(id) });
   }
 }

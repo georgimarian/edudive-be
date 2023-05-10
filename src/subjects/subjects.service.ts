@@ -1,26 +1,38 @@
 import { Injectable } from '@nestjs/common';
-import { CreateSubjectDto } from './dto/create-subject.dto';
-import { UpdateSubjectDto } from './dto/update-subject.dto';
+import { PrismaService } from 'src/prisma.service';
+import { Subject, Prisma } from '@prisma/client';
 
 @Injectable()
 export class SubjectsService {
-  create(createSubjectDto: CreateSubjectDto) {
-    return 'This action adds a new subject';
+  private readonly subjects: Subject[] = [];
+
+  constructor(private prisma: PrismaService) { }
+
+  async findAll(): Promise<Subject[]> {
+    return this.prisma.subject.findMany();
   }
 
-  findAll() {
-    return `This action returns all subjects`;
+  async create(data: Prisma.SubjectCreateInput): Promise<Subject> {
+    return this.prisma.subject.create({ data })
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} subject`;
+
+  async findOne(subjectUniqueInput: Prisma.SubjectWhereUniqueInput): Promise<Subject> {
+    return this.prisma.subject.findUnique({ where: subjectUniqueInput });
   }
 
-  update(id: number, updateSubjectDto: UpdateSubjectDto) {
-    return `This action updates a #${id} subject`;
+  async update(params: {
+    where: Prisma.SubjectWhereUniqueInput,
+    data: Prisma.SubjectUpdateInput
+  }): Promise<Subject> {
+    const { data, where } = params;
+    return this.prisma.subject.update({
+      data, where
+    })
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} subject`;
+  async remove(where: Prisma.SubjectWhereUniqueInput,
+  ): Promise<Subject> {
+    return this.prisma.subject.delete({ where })
   }
 }
