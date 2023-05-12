@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
 import { MasterProgramme } from '@prisma/client';
 import { Request } from 'express';
-import { MasterProgrammeService } from 'src/masterProgrammes/masterProgrammes.service';
+import { MasterProgrammeService } from '../masterProgrammes/masterProgrammes.service';
 
 @Controller('masterProgrammes')
 export class MasterProgrammeController {

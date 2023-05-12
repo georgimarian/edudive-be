@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { MasterProgrammeController } from 'src/masterProgrammes/masterProgrammes.controller';
-import { PrismaService } from 'src/prisma.service';
-import { MasterProgrammeService } from 'src/masterProgrammes/masterProgrammes.service';
+import { MasterProgrammeController } from '../masterProgrammes/masterProgrammes.controller';
+import { PrismaService } from '../prisma.service';
+import { MasterProgrammeService } from '../masterProgrammes/masterProgrammes.service';
 
 @Module({
     controllers: [MasterProgrammeController],
