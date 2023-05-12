@@ -1,0 +1,173 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  STUDENT
+  TEACHER
+  ADMIN
+}
+
+model User {
+  id                       Int                        @id @default(autoincrement())
+  email                    String                     @unique
+  firstName                String?
+  lastName                 String?
+  role                     Role                       @default(STUDENT)
+  StudentToSkill           StudentOnSkill[]
+  TeacherToSubject         TeacherOnSubject[]
+  StudentOnMasterProgramme StudentOnMasterProgramme[]
+}
+
+model MasterProgramme {
+  id                       Int                          @id @default(autoincrement())
+  name                     String
+  subjects                 SubjecstOnMasterProgrammes[]
+  StudentOnMasterProgramme StudentOnMasterProgramme[]
+}
+
+model Subject {
+  id                     Int                          @id @default(autoincrement())
+  name                   String?
+  descriptiveLink        String?
+  masterProgrammes       SubjecstOnMasterProgrammes[]
+  skills                 SubjectsOnSkills[]
+  SubjectOnAssessment    SubjectOnAssessment[]
+  SubjectOnCalendarEvent SubjectOnCalendarEvent[]
+  TeacherToSubject       TeacherOnSubject[]
+}
+
+model SubjecstOnMasterProgrammes {
+  masterProgramme   MasterProgramme @relation(fields: [masterProgrammeId], references: [id])
+  masterProgrammeId Int
+  subject           Subject         @relation(fields: [subjectId], references: [id])
+  subjectId         Int
+
+  @@id([masterProgrammeId, subjectId])
+}
+
+enum SkillType {
+  SOFT
+  HARD
+}
+
+model Skill {
+  id                   Int                    @id @default(autoincrement())
+  name                 String?
+  type                 SkillType
+  subjects             SubjectsOnSkills[]
+  SkillOnStep          SkillOnStep[]
+  StudentToSkill       StudentOnSkill[]
+  SkillOnChecklistStep SkillOnChecklistStep[]
+}
+
+model SubjectsOnSkills {
+  subject   Subject @relation(fields: [subjectId], references: [id])
+  subjectId Int
+  skill     Skill   @relation(fields: [skillId], references: [id])
+  skillId   Int
+
+  @@id([subjectId, skillId])
+}
+
+model Step {
+  id          Int           @id @default(autoincrement())
+  description String?
+  nexStepId   Int?
+  SkillOnStep SkillOnStep[]
+}
+
+// NOT SURE IF next step ID makes sense
+model SkillOnStep {
+  skill   Skill @relation(fields: [skillId], references: [id])
+  skillId Int
+  step    Step  @relation(fields: [stepId], references: [id])
+  stepId  Int
+
+  @@id([stepId, skillId])
+}
+
+model ChecklistStep {
+  id                   Int                    @id @default(autoincrement())
+  description          String?
+  SkillOnChecklistStep SkillOnChecklistStep[]
+}
+
+model SkillOnChecklistStep {
+  skill           Skill         @relation(fields: [skillId], references: [id])
+  skillId         Int
+  checklistStep   ChecklistStep @relation(fields: [checklistStepId], references: [id])
+  checklistStepId Int
+
+  @@id([checklistStepId, skillId])
+}
+
+model Assessment {
+  id                   Int                   @id @default(autoincrement())
+  title                String?
+  finalGradePercentage Int
+  SubjectOnAssessment  SubjectOnAssessment[]
+}
+
+model SubjectOnAssessment {
+  subject      Subject    @relation(fields: [subjectId], references: [id])
+  subjectId    Int
+  assessment   Assessment @relation(fields: [assessmentId], references: [id])
+  assessmentId Int
+
+  @@id([subjectId, assessmentId])
+}
+
+model CalendarEvent {
+  id                     Int                      @id @default(autoincrement())
+  title                  String?
+  date                   DateTime
+  SubjectOnCalendarEvent SubjectOnCalendarEvent[]
+}
+
+model SubjectOnCalendarEvent {
+  subject         Subject       @relation(fields: [subjectId], references: [id])
+  subjectId       Int
+  calendarEvent   CalendarEvent @relation(fields: [calendarEventId], references: [id])
+  calendarEventId Int
+
+  @@id([subjectId, calendarEventId])
+}
+
+model StudentOnSkill {
+  student                User  @relation(fields: [studentId], references: [id])
+  studentId              Int
+  skill                  Skill @relation(fields: [skillId], references: [id])
+  skillId                Int
+  currentStepId          Int
+  percentageToCompletion Int
+
+  @@id([studentId, skillId])
+}
+
+model TeacherOnSubject {
+  teacher   User    @relation(fields: [teacherId], references: [id])
+  teacherId Int
+  subject   Subject @relation(fields: [subjectId], references: [id])
+  subjectId Int
+
+  @@id([teacherId, subjectId])
+}
+
+model StudentOnMasterProgramme {
+  student           User            @relation(fields: [studentId], references: [id])
+  studentId         Int
+  MasterProgramme   MasterProgramme @relation(fields: [masterProgrammeId], references: [id])
+  masterProgrammeId Int
+  yearOfStudy       Int             @default(1)
+
+  @@id([studentId, masterProgrammeId])
+}
