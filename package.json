@@ -28,6 +28,7 @@
     "@prisma/client": "^4.12.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
+    "swagger-ui": "^4.18.3",
     "swagger-ui-dist": "^4.18.3"
   },
   "devDependencies": {
