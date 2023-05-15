@@ -2,12 +2,16 @@ import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
 import { Request } from 'express';
 import { UsersService } from 'src/users/users.service';
 import { User } from 'src/user.interface';
+import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { UserEntity } from './entities/user.entity';
 
 @Controller('users')
+@ApiTags('users')
 export class UsersController {
   constructor(private usersService: UsersService) { }
 
   @Get()
+  @ApiOkResponse({ type: UserEntity, isArray: true })
   async findAll(@Req() request: Request): Promise<User[]> {
     console.log(request.body);
     return this.usersService.findAll();
@@ -19,6 +23,7 @@ export class UsersController {
   }
 
   @Post('/createUser')
+  @ApiCreatedResponse({ type: UserEntity })
   async createUser(@Body() userData: { firstName: string, lastName: string, email: string }): Promise<User> {
     try {
       return this.usersService.createUser(userData);
