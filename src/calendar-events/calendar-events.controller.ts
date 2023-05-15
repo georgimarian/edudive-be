@@ -4,6 +4,7 @@ import { CreateCalendarEventDto } from './dto/create-calendar-event.dto';
 import { UpdateCalendarEventDto } from './dto/update-calendar-event.dto';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { CalendarEventEntity } from './entities/calendar-event.entity';
+import { CalendarEvent } from '@prisma/client';
 
 @Controller('calendar-events')
 @ApiTags('calendar-events')
@@ -18,13 +19,13 @@ export class CalendarEventsController {
 
   @Get()
   @ApiOkResponse({ type: CalendarEventEntity, isArray: true })
-  async findAll() {
+  async findAll(): Promise<CalendarEvent[]> {
     return this.calendarEventsService.findAll();
   }
 
   @Get(':id')
   @ApiOkResponse({ type: CalendarEventEntity })
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string): Promise<CalendarEvent> {
     return this.calendarEventsService.findOne({ id: Number(id) });
   }
 
