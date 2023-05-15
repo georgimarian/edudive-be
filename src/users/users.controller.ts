@@ -18,6 +18,7 @@ export class UsersController {
   }
 
   @Get(':id')
+  @ApiOkResponse({ type: UserEntity })
   async findOne(@Param() params: { id: string }): Promise<User> {
     return this.usersService.findOne({ id: Number(params.id) });
   }
