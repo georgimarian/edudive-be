@@ -1,9 +1,9 @@
-import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, Req } from '@nestjs/common';
 import { Request } from 'express';
 import { UsersService } from 'src/users/users.service';
-import { User } from 'src/user.interface';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { UserEntity } from './entities/user.entity';
+import { Role, User } from '@prisma/client';
 
 @Controller('users')
 @ApiTags('users')
@@ -17,9 +17,17 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
+
+
+  @Get('/findByEmail')
+  @ApiOkResponse({ type: UserEntity })
+  async findOneByEmail(@Query('email') email: string): Promise<Role> {
+    return (await this.usersService.findOneByEmail(email)).role;
+  }
+
   @Get(':id')
   @ApiOkResponse({ type: UserEntity })
-  async findOne(@Param() params: { id: string }): Promise<User> {
+  async findOneById(@Param() params: { id: string }): Promise<User> {
     return this.usersService.findOne({ id: Number(params.id) });
   }
 
