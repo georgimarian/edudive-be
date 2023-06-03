@@ -68,6 +68,13 @@ model Skill {
   SkillOnStep          SkillOnStep[]
   StudentToSkill       StudentOnSkill[]
   SkillOnChecklistStep SkillOnChecklistStep[]
+  color                String?
+}
+
+model PredefinedSkill {
+  id   Int       @id @default(autoincrement())
+  name String?
+  type SkillType
 }
 
 model SubjectsOnSkills {

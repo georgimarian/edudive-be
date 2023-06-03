@@ -10,4 +10,7 @@ export class SkillEntity implements Skill {
 
     @ApiProperty()
     type: SkillType;
+
+    @ApiProperty()
+    color: string;
 }

@@ -2,8 +2,10 @@ import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
 import { MasterProgramme } from '@prisma/client';
 import { Request } from 'express';
 import { MasterProgrammeService } from '../masterProgrammes/masterProgrammes.service';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('masterProgrammes')
+@ApiTags('masterProgrammes')
 export class MasterProgrammeController {
     constructor(private masterProgrammeService: MasterProgrammeService) { }
 

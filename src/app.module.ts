@@ -9,9 +9,10 @@ import { AssessmentsModule } from './assessments/assessments.module';
 import { CalendarEventsModule } from './calendar-events/calendar-events.module';
 import { StepsModule } from './steps/steps.module';
 import { NlpModule } from './nlp/nlp.module';
+import { PredefinedSkillsModule } from './predefined-skills/predefined-skills.module';
 
 @Module({
-  imports: [UsersModule, MasterProgrammeModule, SubjectsModule, SkillsModule, AssessmentsModule, CalendarEventsModule, StepsModule, NlpModule],
+  imports: [UsersModule, MasterProgrammeModule, SubjectsModule, SkillsModule, AssessmentsModule, CalendarEventsModule, StepsModule, NlpModule, PredefinedSkillsModule],
   controllers: [AppController],
   providers: [AppService],
 })

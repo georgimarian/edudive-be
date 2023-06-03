@@ -21,6 +21,20 @@ export class SubjectsService {
     return this.prisma.subject.findUnique({ where: subjectUniqueInput });
   }
 
+  async findAllBySkillId(data: Prisma.SkillWhereUniqueInput): Promise<Subject[]> {
+    console.log(data)
+    return this.prisma.subject.findMany({
+      where: {
+        skills: {
+          some: {
+            skillId: data.id
+          }
+        }
+      },
+      include: { skills: true }
+    });
+  }
+
   async update(params: {
     where: Prisma.SubjectWhereUniqueInput,
     data: Prisma.SubjectUpdateInput

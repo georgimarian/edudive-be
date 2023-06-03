@@ -3,8 +3,10 @@ import { SkillsService } from './skills.service';
 import { CreateSkillDto } from './dto/create-skill.dto';
 import { UpdateSkillDto } from './dto/update-skill.dto';
 import { Skill } from '@prisma/client';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('skills')
+@ApiTags('skills')
 export class SkillsController {
   constructor(private readonly skillsService: SkillsService) { }
 

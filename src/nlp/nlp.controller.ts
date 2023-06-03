@@ -2,10 +2,12 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { NlpService } from './nlp.service';
 import { CreateNlpDto } from './dto/create-nlp.dto';
 import { UpdateNlpDto } from './dto/update-nlp.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('nlp')
+@ApiTags('nlp')
 export class NlpController {
-  constructor(private readonly nlpService: NlpService) {}
+  constructor(private readonly nlpService: NlpService) { }
 
   @Post()
   create(@Body() createNlpDto: CreateNlpDto) {

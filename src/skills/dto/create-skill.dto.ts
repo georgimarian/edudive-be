@@ -4,4 +4,5 @@ export class CreateSkillDto implements Skill {
     id: number;
     name: string;
     type: SkillType;
+    color: string;
 }
