@@ -22,8 +22,7 @@ export class SubjectsController {
   }
 
   @Get()
-  async findOneBySkill(@Query('skillId') skillId: string) {
-    console.log(skillId)
+  async findAllBySkill(@Query('skillId') skillId: string) {
     return this.subjectsService.findAllBySkillId({ id: Number(skillId) });
   }
 

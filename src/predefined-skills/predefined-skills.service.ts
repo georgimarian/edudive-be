@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
-import { PredefinedSkill, Prisma } from '@prisma/client';
+import { PredefinedSkill, Prisma, SkillType } from '@prisma/client';
 
 @Injectable()
 export class PredefinedSkillsService {
@@ -15,8 +15,16 @@ export class PredefinedSkillsService {
     return this.prisma.predefinedSkill.findMany();
   }
 
-  async findOne(predefinedSkillUniqueInput: Prisma.PredefinedSkillWhereUniqueInput) {
-    return this.prisma.subject.findUnique({ where: predefinedSkillUniqueInput });
+  async findAllByType(data: SkillType): Promise<PredefinedSkill[]> {
+    return this.prisma.predefinedSkill.findMany({
+      where: {
+        type: data
+      }
+    })
+  }
+
+  async findOne(predefinedSkillUniqueInput: Prisma.PredefinedSkillWhereUniqueInput): Promise<PredefinedSkill> {
+    return this.prisma.predefinedSkill.findUnique({ where: predefinedSkillUniqueInput });
   }
 
   async update(params: {

@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { PredefinedSkillsService } from './predefined-skills.service';
 import { PredefinedSkillDto } from './dto/predefined-skill.dto';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { PredefinedSkillEntity } from './entities/predefined-skill.entity';
+import { SkillType } from '@prisma/client';
 
 @Controller('predefined-skills')
 @ApiTags('predefined-skills')
@@ -11,28 +12,34 @@ export class PredefinedSkillsController {
 
   @Post()
   @ApiCreatedResponse({ type: PredefinedSkillDto })
-  create(@Body() createPredefinedSkillDto: PredefinedSkillDto) {
+  async create(@Body() createPredefinedSkillDto: PredefinedSkillDto) {
     return this.predefinedSkillsService.create(createPredefinedSkillDto);
   }
 
   @Get()
-  @ApiOkResponse({ type: PredefinedSkillEntity, isArray: true })
-  findAll() {
-    return this.predefinedSkillsService.findAll();
+  async findAllByType(@Query('type') type: SkillType) {
+    return this.predefinedSkillsService.findAllByType(type)
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     return this.predefinedSkillsService.findOne({ id: Number(id) });
   }
 
+  @Get()
+  @ApiOkResponse({ type: PredefinedSkillEntity, isArray: true })
+  async findAll() {
+    return this.predefinedSkillsService.findAll();
+  }
+
+
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePredefinedSkillDto: PredefinedSkillDto) {
+  async update(@Param('id') id: string, @Body() updatePredefinedSkillDto: PredefinedSkillDto) {
     return this.predefinedSkillsService.update({ where: { id: Number(id) }, data: updatePredefinedSkillDto });
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     return this.predefinedSkillsService.remove({ id: Number(id) });
   }
 }
