@@ -131,12 +131,18 @@ model Assessment {
   subjectId            Int?
 }
 
+enum EventType {
+  EXAM
+  ASSIGNMENT
+}
+
 model CalendarEvent {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   title     String?
   date      DateTime
-  Subject   Subject? @relation(fields: [subjectId], references: [id])
+  Subject   Subject?  @relation(fields: [subjectId], references: [id])
   subjectId Int?
+  type      EventType @default(EXAM)
 }
 
 model StudentOnSkill {
