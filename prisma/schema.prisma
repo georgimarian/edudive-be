@@ -130,6 +130,7 @@ model Assessment {
   finalGradePercentage Int
   Subject              Subject? @relation(fields: [subjectId], references: [id])
   subjectId            Int?
+  completed            Boolean  @default(false)
 }
 
 enum EventType {
