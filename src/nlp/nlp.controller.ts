@@ -1,18 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Param, Delete, UseInterceptors, UploadedFile, Post } from '@nestjs/common';
 import { NlpService } from './nlp.service';
-import { CreateNlpDto } from './dto/create-nlp.dto';
-import { UpdateNlpDto } from './dto/update-nlp.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { FileUploadDto } from './dto/fileUpload.dto';
+import { diskStorage } from 'multer';
 
 @Controller('nlp')
 @ApiTags('nlp')
 export class NlpController {
   constructor(private readonly nlpService: NlpService) { }
 
-  @Post()
-  create(@Body() createNlpDto: CreateNlpDto) {
-    return this.nlpService.create(createNlpDto);
-  }
+
 
   @Get()
   findAll() {
@@ -24,13 +22,25 @@ export class NlpController {
     return this.nlpService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateNlpDto: UpdateNlpDto) {
-    return this.nlpService.update(+id, updateNlpDto);
-  }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.nlpService.remove(+id);
+  }
+
+
+  @Post('/file')
+  @UseInterceptors(FileInterceptor('file', {
+    storage: diskStorage({
+      destination: './uploadedFiles'
+    })
+  }))
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description: 'Letter of intent',
+    type: FileUploadDto,
+  })
+  async uploadFile(@UploadedFile() file: Express.Multer.File) {
+    console.log(file)
   }
 }
