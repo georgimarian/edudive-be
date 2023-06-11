@@ -1,8 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { CalendarEvent } from '@prisma/client';
+import { CalendarEvent, EventType } from '@prisma/client';
 
 
 export class CalendarEventEntity implements CalendarEvent {
+    type: EventType;
     subjectId: number;
     @ApiProperty()
     id: number;
