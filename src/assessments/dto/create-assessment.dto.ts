@@ -6,4 +6,5 @@ export class CreateAssessmentDto implements Assessment {
     title: string;
     description: string;
     finalGradePercentage: number;
+    completed: boolean;
 }

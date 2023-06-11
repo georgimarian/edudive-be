@@ -14,4 +14,7 @@ export class AssessmentEntity implements Assessment {
 
     @ApiProperty()
     finalGradePercentage: number;
+
+    @ApiProperty()
+    completed: boolean;
 }

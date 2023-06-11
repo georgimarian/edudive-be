@@ -16,6 +16,12 @@ export class SubjectsController {
     return this.subjectsService.create(createSubjectDto);
   }
 
+  @Get()
+  @ApiOkResponse({ type: SubjectEntity, isArray: true })
+  async findAll() {
+    return this.subjectsService.findAll();
+  }
+
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return this.subjectsService.findOne({ id: Number(id) });
@@ -24,12 +30,6 @@ export class SubjectsController {
   @Get()
   async findAllBySkill(@Query('skillId') skillId: string) {
     return this.subjectsService.findAllBySkillId({ id: Number(skillId) });
-  }
-
-  @Get()
-  @ApiOkResponse({ type: SubjectEntity, isArray: true })
-  async findAll() {
-    return this.subjectsService.findAll();
   }
 
   @Patch(':id')
