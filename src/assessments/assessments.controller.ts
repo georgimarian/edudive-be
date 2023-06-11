@@ -26,6 +26,12 @@ export class AssessmentsController {
 
   }
 
+  @Get()
+  async findByStatus(@Query('completed') completed: boolean): Promise<Assessment[]> {
+    return this.assessmentsService.findByStatus(completed);
+
+  }
+
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return this.assessmentsService.findOne({ id: Number(id) });

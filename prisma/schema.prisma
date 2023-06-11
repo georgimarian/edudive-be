@@ -23,6 +23,7 @@ model User {
   email                    String                     @unique
   firstName                String?
   lastName                 String?
+  firebaseId               String?
   role                     Role                       @default(STUDENT)
   StudentToSkill           StudentOnSkill[]
   TeacherToSubject         TeacherOnSubject[]
@@ -56,6 +57,12 @@ model SubjecstOnMasterProgrammes {
   subjectId         Int
 
   @@id([masterProgrammeId, subjectId])
+}
+
+model Checklist {
+  id          Int     @id @default(autoincrement())
+  description String?
+  skillId     Int
 }
 
 enum SkillType {

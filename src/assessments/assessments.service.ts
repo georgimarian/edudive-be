@@ -30,6 +30,14 @@ export class AssessmentsService {
     })
   }
 
+  async findByStatus(completed: boolean): Promise<Assessment[]> {
+    return this.prisma.assessment.findMany({
+      where: {
+        completed: completed
+      }
+    })
+  }
+
   async update(params: {
     where: Prisma.AssessmentWhereUniqueInput,
     data: Prisma.AssessmentUpdateInput
