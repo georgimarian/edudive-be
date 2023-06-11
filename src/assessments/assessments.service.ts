@@ -20,6 +20,16 @@ export class AssessmentsService {
     return this.prisma.assessment.findUnique({ where: assessmentUniqueInput });
   }
 
+  async findBySubject(subject: string): Promise<Assessment[]> {
+    return this.prisma.assessment.findMany({
+      where: {
+        Subject: {
+          name: subject
+        }
+      }
+    })
+  }
+
   async update(params: {
     where: Prisma.AssessmentWhereUniqueInput,
     data: Prisma.AssessmentUpdateInput

@@ -18,7 +18,6 @@ export class UsersController {
   }
 
 
-
   @Get('/findByEmail')
   @ApiOkResponse({ type: UserEntity })
   async findOneByEmail(@Query('email') email: string): Promise<Role> {

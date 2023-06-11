@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { AssessmentsService } from './assessments.service';
 import { CreateAssessmentDto } from './dto/create-assessment.dto';
 import { UpdateAssessmentDto } from './dto/update-assessment.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { Assessment } from '@prisma/client';
 
 @Controller('assessments')
 @ApiTags('assessments')
@@ -17,6 +18,12 @@ export class AssessmentsController {
   @Get()
   async findAll() {
     return this.assessmentsService.findAll();
+  }
+
+  @Get()
+  async findBySubject(@Query('subject') subject: string): Promise<Assessment[]> {
+    return this.assessmentsService.findBySubject(subject);
+
   }
 
   @Get(':id')

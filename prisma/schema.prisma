@@ -126,6 +126,7 @@ model SkillOnChecklistStep {
 model Assessment {
   id                   Int      @id @default(autoincrement())
   title                String?
+  description          String?
   finalGradePercentage Int
   Subject              Subject? @relation(fields: [subjectId], references: [id])
   subjectId            Int?

@@ -10,5 +10,8 @@ export class AssessmentEntity implements Assessment {
     title: string;
 
     @ApiProperty()
+    description: string;
+
+    @ApiProperty()
     finalGradePercentage: number;
 }
