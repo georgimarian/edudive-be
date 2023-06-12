@@ -37,8 +37,9 @@ export class AssessmentsController {
     return this.assessmentsService.findOne({ id: Number(id) });
   }
 
-  @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateAssessmentDto: UpdateAssessmentDto) {
+  @Patch()
+  async update(@Query('id') id: string, @Body() updateAssessmentDto: UpdateAssessmentDto) {
+    console.log("here", id)
     return this.assessmentsService.update({ where: { id: Number(id) }, data: updateAssessmentDto });
   }
 

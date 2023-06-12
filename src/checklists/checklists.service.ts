@@ -9,18 +9,18 @@ import { Checklist, Prisma } from '@prisma/client';
 export class ChecklistsService {
   constructor(private prisma: PrismaService) { }
 
-  create(data: Prisma.ChecklistCreateInput) {
+  async create(data: Prisma.ChecklistCreateInput) {
     return this.prisma.checklist.create({ data });
   }
 
-  findAll() {
+  async findAll() {
     return this.prisma.checklist.findMany();
   }
 
-  findAllByInterest(data: Prisma.SkillWhereUniqueInput) {
+  async findAllByInterest(data: Prisma.SkillWhereUniqueInput) {
     return this.prisma.checklist.findMany({
       where: {
-        skillId: data.id
+        skillId: Number(data.id),
       }
     })
   }

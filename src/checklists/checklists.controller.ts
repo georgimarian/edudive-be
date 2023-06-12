@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { ChecklistsService } from './checklists.service';
 import { CreateChecklistDto } from './dto/create-checklist.dto';
 import { UpdateChecklistDto } from './dto/update-checklist.dto';
@@ -8,8 +8,14 @@ export class ChecklistsController {
   constructor(private readonly checklistsService: ChecklistsService) { }
 
   @Post()
-  create(@Body() createChecklistDto) {
+  create(@Body() createChecklistDto: CreateChecklistDto) {
+    console.log(createChecklistDto)
     return this.checklistsService.create(createChecklistDto);
+  }
+
+  @Get()
+  findAllBySkillId(@Query('skillId') skillId: number) {
+    return this.checklistsService.findAllByInterest({ id: skillId });
   }
 
   @Get()

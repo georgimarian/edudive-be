@@ -1,1 +1,5 @@
-export class CreateChecklistDto {}
+export class CreateChecklistDto {
+    title: string;
+    description: string;
+    skillId: number;
+}
