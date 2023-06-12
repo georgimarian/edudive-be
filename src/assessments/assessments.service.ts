@@ -38,6 +38,30 @@ export class AssessmentsService {
     })
   }
 
+  //TODO: see here
+  async findByUser(userId: string, filters = {}): Promise<Assessment[]> {
+    return this.prisma.assessment.findMany({
+      where: {
+        // Subject: {
+        //   skills: {
+        //     some: {
+        //       skill: {
+        //         StudentToSkill: {
+        //           some: {
+        //             student: {
+        //               firebaseId: userId
+        //             }
+        //           }
+        //         }
+        //       }
+        //     }
+        //   }
+        // },
+        ...filters
+      }
+    })
+  }
+
   async update(params: {
     where: Prisma.AssessmentWhereUniqueInput,
     data: Prisma.AssessmentUpdateInput

@@ -32,6 +32,11 @@ export class AssessmentsController {
 
   }
 
+  @Get()
+  async findByUser(@Query('firebaseId') firebaseId: string, filters): Promise<Assessment[]> {
+    return this.assessmentsService.findByUser(firebaseId, filters);
+  }
+
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return this.assessmentsService.findOne({ id: Number(id) });

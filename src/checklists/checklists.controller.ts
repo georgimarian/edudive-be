@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import { ChecklistsService } from './checklists.service';
 import { CreateChecklistDto } from './dto/create-checklist.dto';
 import { UpdateChecklistDto } from './dto/update-checklist.dto';
+import { Checklist } from '@prisma/client';
 
 @Controller('checklists')
 export class ChecklistsController {
@@ -9,12 +10,11 @@ export class ChecklistsController {
 
   @Post()
   create(@Body() createChecklistDto: CreateChecklistDto) {
-    console.log(createChecklistDto)
     return this.checklistsService.create(createChecklistDto);
   }
 
   @Get()
-  findAllBySkillId(@Query('skillId') skillId: number) {
+  async findAllBySkillId(@Query('skillId') skillId: number): Promise<Checklist[]> {
     return this.checklistsService.findAllByInterest({ id: skillId });
   }
 

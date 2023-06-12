@@ -11,9 +11,11 @@ import { StepsModule } from './steps/steps.module';
 import { NlpModule } from './nlp/nlp.module';
 import { PredefinedSkillsModule } from './predefined-skills/predefined-skills.module';
 import { ChecklistsModule } from './checklists/checklists.module';
+import { ChallengesModule } from './challenges/challenges.module';
+import { BadgesModule } from './badges/badges.module';
 
 @Module({
-  imports: [UsersModule, MasterProgrammeModule, SubjectsModule, SkillsModule, AssessmentsModule, CalendarEventsModule, StepsModule, NlpModule, PredefinedSkillsModule, ChecklistsModule],
+  imports: [UsersModule, MasterProgrammeModule, SubjectsModule, SkillsModule, AssessmentsModule, CalendarEventsModule, StepsModule, NlpModule, PredefinedSkillsModule, ChecklistsModule, ChallengesModule, BadgesModule],
   controllers: [AppController],
   providers: [AppService],
 })
