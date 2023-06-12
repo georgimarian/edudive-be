@@ -16,26 +16,22 @@ export class AssessmentsController {
   }
 
   @Get()
+  async findByStatus(@Query('subject') subject: string, @Query('completed') completed: boolean, @Query('firebaseId') firebaseId: string): Promise<Assessment[]> {
+    if (completed)
+      return this.assessmentsService.findByStatus(Boolean(completed));
+    if (subject)
+      return this.assessmentsService.findBySubject(subject);
+    if (firebaseId)
+      return this.assessmentsService.findByUser(firebaseId, { completed: false });
+
+
+  }
+
+  @Get()
   async findAll() {
     return this.assessmentsService.findAll();
   }
 
-  @Get()
-  async findBySubject(@Query('subject') subject: string): Promise<Assessment[]> {
-    return this.assessmentsService.findBySubject(subject);
-
-  }
-
-  @Get()
-  async findByStatus(@Query('completed') completed: boolean): Promise<Assessment[]> {
-    return this.assessmentsService.findByStatus(completed);
-
-  }
-
-  @Get()
-  async findByUser(@Query('firebaseId') firebaseId: string, filters): Promise<Assessment[]> {
-    return this.assessmentsService.findByUser(firebaseId, filters);
-  }
 
   @Get(':id')
   async findOne(@Param('id') id: string) {

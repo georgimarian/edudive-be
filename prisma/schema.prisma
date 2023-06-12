@@ -84,6 +84,8 @@ model Challenge {
   name               String
   ChallengeOnStudent ChallengeOnStudent[]
   completed          Boolean              @default(false)
+  skill              Skill?               @relation(fields: [skillId], references: [id])
+  skillId            Int?
 }
 
 model Skill {
@@ -95,6 +97,7 @@ model Skill {
   StudentToSkill       StudentOnSkill[]
   SkillOnChecklistStep SkillOnChecklistStep[]
   color                String?
+  Challenge            Challenge[]
 }
 
 model PredefinedSkill {

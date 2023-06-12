@@ -12,9 +12,9 @@ export class ChallengesController {
   }
 
   @Get()
-  findAll(@Query('firebaseId') firebaseId: string, @Query("filters") filters) {
+  findAll(@Query('firebaseId') firebaseId: string, @Query("skillId") skillId: number, @Query("filters") filters) {
     console.log(firebaseId, filters)
-    return this.challengesService.findAllByUser(firebaseId, filters);
+    return this.challengesService.findAllByUser(firebaseId, Number(skillId), filters);
   }
 
   @Get(':id')

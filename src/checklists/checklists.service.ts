@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { CreateChecklistDto } from './dto/create-checklist.dto';
 import { UpdateChecklistDto } from './dto/update-checklist.dto';
 import { PrismaService } from 'src/prisma.service';
-import { Checklist, Prisma } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 
 
 @Injectable()

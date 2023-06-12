@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { SkillsService } from './skills.service';
 import { CreateSkillDto } from './dto/create-skill.dto';
 import { UpdateSkillDto } from './dto/update-skill.dto';
@@ -16,14 +16,21 @@ export class SkillsController {
   }
 
   @Get()
-  async findAll() {
-    return this.skillsService.findAll();
+  async findByUser(@Query("id") userId: string) {
+    console.log("userId")
+    return this.skillsService.findAllByUserId(userId);
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<Skill> {
     return this.skillsService.findOne({ id: Number(id) });
   }
+
+  @Get()
+  async findAll() {
+    return this.skillsService.findAll();
+  }
+
 
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateSkillDto: UpdateSkillDto) {
