@@ -29,18 +29,19 @@ export class NlpController {
   }
 
 
-  @Post('/file')
-  @UseInterceptors(FileInterceptor('file', {
-    storage: diskStorage({
-      destination: './uploadedFiles'
-    })
-  }))
-  @ApiConsumes('multipart/form-data')
-  @ApiBody({
-    description: 'Letter of intent',
-    type: FileUploadDto,
-  })
-  async uploadFile(@UploadedFile() file: Express.Multer.File) {
-    console.log(file)
-  }
+  //   @Post('/file')
+  //   @UseInterceptors(FileInterceptor('file', {
+  //     storage: diskStorage({
+  //       destination: './uploadedFiles'
+  //     })
+  //   }))
+  //   @ApiConsumes('multipart/form-data')
+  //   @ApiBody({
+  //     description: 'Letter of intent',
+  //     type: FileUploadDto,
+  //   })
+  //   async uploadFile(@UploadedFile() file: Express.Multer.File) {
+  //     console.log(file)
+  //   }
+  // 
 }
