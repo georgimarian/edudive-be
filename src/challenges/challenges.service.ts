@@ -14,20 +14,31 @@ export class ChallengesService {
     return this.prisma.challenge.create({ data });
   }
 
-  findAllByUser(firebaseId: string, filters): Promise<Challenge[]> {
+  async findAllByUser(firebaseId: string, filters): Promise<Challenge[]> {
     return this.prisma.challenge.findMany({
       where: {
-
+        ChallengeOnStudent: {
+          some: {
+            user: {
+              firebaseId: firebaseId
+            }
+          }
+        },
+        completed: false
       }
     });
   }
 
-  findAll(): Promise<Challenge[]> {
+  async findAll(): Promise<Challenge[]> {
     return this.prisma.challenge.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} challenge`;
+  async findOne(id: number): Promise<Challenge> {
+    return this.prisma.challenge.findFirst({
+      where: {
+        id: id
+      }
+    });
   }
 
   update(id: number, updateChallengeDto: UpdateChallengeDto) {

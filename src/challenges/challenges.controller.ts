@@ -19,12 +19,12 @@ export class ChallengesController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.challengesService.findOne(+id);
+    return this.challengesService.findOne(Number(id));
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateChallengeDto: UpdateChallengeDto) {
-    return this.challengesService.update(+id, updateChallengeDto);
+    return this.challengesService.update(Number(id), updateChallengeDto);
   }
 
   @Delete(':id')

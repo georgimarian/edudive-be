@@ -28,6 +28,7 @@ model User {
   StudentToSkill           StudentOnSkill[]
   TeacherToSubject         TeacherOnSubject[]
   StudentOnMasterProgramme StudentOnMasterProgramme[]
+  ChallengeOnStudent       ChallengeOnStudent[]
 }
 
 model MasterProgramme {
@@ -79,8 +80,10 @@ model Badge {
 }
 
 model Challenge {
-  id   Int    @id @default(autoincrement())
-  name String
+  id                 Int                  @id @default(autoincrement())
+  name               String
+  ChallengeOnStudent ChallengeOnStudent[]
+  completed          Boolean              @default(false)
 }
 
 model Skill {
@@ -107,6 +110,15 @@ model SubjectsOnSkills {
   skillId   Int
 
   @@id([subjectId, skillId])
+}
+
+model ChallengeOnStudent {
+  challenge   Challenge @relation(fields: [challengeId], references: [id])
+  challengeId Int
+  user        User      @relation(fields: [userId], references: [id])
+  userId      Int
+
+  @@id([challengeId, userId])
 }
 
 model Step {
