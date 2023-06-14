@@ -14,21 +14,37 @@ export class ChallengesService {
     return this.prisma.challenge.create({ data });
   }
 
-  async findAllByUser(firebaseId: string, skillId: number, filters): Promise<Challenge[]> {
-    return this.prisma.challenge.findMany({
-      where: {
-        AND: [
-          { skillId: skillId },
-          {
-            ChallengeOnStudent: {
-              some: {
-                user: {
-                  firebaseId: firebaseId,
+  async findAllByUser(firebaseId: string, skillId: number, filters = {}): Promise<Challenge[]> {
+    if (skillId > 0)
+      return this.prisma.challenge.findMany({
+        where: {
+          AND: [
+            { skillId: skillId },
+            {
+              ChallengeOnStudent: {
+                some: {
+                  user: {
+                    firebaseId: firebaseId,
 
+                  }
                 }
               }
+            }],
+          completed: false,
+        }
+      });
+
+    return this.prisma.challenge.findMany({
+      where: {
+        ChallengeOnStudent: {
+          some: {
+            user: {
+              firebaseId: firebaseId,
+
             }
-          }],
+          }
+        }
+        ,
         completed: false,
       }
     });
@@ -46,11 +62,16 @@ export class ChallengesService {
     });
   }
 
-  update(id: number, updateChallengeDto: UpdateChallengeDto) {
-    return `This action updates a #${id} challenge`;
+  async update(id: number, updateChallengeDto: UpdateChallengeDto) {
+    return this.prisma.challenge.update({
+      where: {
+        id: id,
+      },
+      data: updateChallengeDto
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} challenge`;
+  async remove(id: number) {
+    return this.prisma.challenge.delete({ where: { id: id } });
   }
 }

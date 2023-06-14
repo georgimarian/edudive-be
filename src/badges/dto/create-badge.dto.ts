@@ -1,1 +1,4 @@
-export class CreateBadgeDto {}
+export class CreateBadgeDto {
+    name: string;
+    filename: string;
+}

@@ -3,13 +3,15 @@ import { ChecklistsService } from './checklists.service';
 import { CreateChecklistDto } from './dto/create-checklist.dto';
 import { UpdateChecklistDto } from './dto/update-checklist.dto';
 import { Checklist } from '@prisma/client';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('checklists')
+@ApiTags('checklists')
 export class ChecklistsController {
   constructor(private readonly checklistsService: ChecklistsService) { }
 
   @Post()
-  create(@Body() createChecklistDto: CreateChecklistDto) {
+  async create(@Body() createChecklistDto: CreateChecklistDto) {
     return this.checklistsService.create(createChecklistDto);
   }
 
@@ -19,22 +21,22 @@ export class ChecklistsController {
   }
 
   @Get()
-  findAll() {
+  async findAll() {
     return this.checklistsService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     return this.checklistsService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateChecklistDto: UpdateChecklistDto) {
+  async update(@Param('id') id: string, @Body() updateChecklistDto: UpdateChecklistDto) {
     return this.checklistsService.update(+id, updateChecklistDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     return this.checklistsService.remove(+id);
   }
 }

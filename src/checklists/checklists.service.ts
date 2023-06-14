@@ -1,22 +1,22 @@
 import { Injectable } from '@nestjs/common';
 import { UpdateChecklistDto } from './dto/update-checklist.dto';
 import { PrismaService } from 'src/prisma.service';
-import { Prisma } from '@prisma/client';
+import { Checklist, Prisma } from '@prisma/client';
 
 
 @Injectable()
 export class ChecklistsService {
   constructor(private prisma: PrismaService) { }
 
-  async create(data: Prisma.ChecklistCreateInput) {
+  async create(data: Prisma.ChecklistCreateInput): Promise<Checklist> {
     return this.prisma.checklist.create({ data });
   }
 
-  async findAll() {
+  async findAll(): Promise<Checklist[]> {
     return this.prisma.checklist.findMany();
   }
 
-  async findAllByInterest(data: Prisma.SkillWhereUniqueInput) {
+  async findAllByInterest(data: Prisma.SkillWhereUniqueInput): Promise<Checklist[]> {
     return this.prisma.checklist.findMany({
       where: {
         skillId: Number(data.id),
@@ -24,15 +24,18 @@ export class ChecklistsService {
     })
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} checklist`;
+  async findOne(id: number): Promise<Checklist> {
+    return this.prisma.checklist.findFirst({ where: { id: id } });
   }
 
-  update(id: number, updateChecklistDto: UpdateChecklistDto) {
-    return `This action updates a #${id} checklist`;
+  async update(id: number, updateChecklistDto: UpdateChecklistDto): Promise<Checklist> {
+    return this.prisma.checklist.update({
+      where: { id: id },
+      data: updateChecklistDto
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} checklist`;
+  async remove(id: number): Promise<Checklist> {
+    return this.prisma.checklist.delete({ where: { id: id } });
   }
 }

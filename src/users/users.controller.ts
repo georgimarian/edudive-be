@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Query, Req } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Req } from '@nestjs/common';
 import { Request } from 'express';
 import { UsersService } from 'src/users/users.service';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
@@ -10,13 +10,6 @@ import { Role, User } from '@prisma/client';
 export class UsersController {
   constructor(private usersService: UsersService) { }
 
-  @Get()
-  @ApiOkResponse({ type: UserEntity, isArray: true })
-  async findAll(@Req() request: Request): Promise<User[]> {
-    console.log(request.body);
-    return this.usersService.findAll();
-  }
-
 
   @Get('/findByEmail')
   @ApiOkResponse({ type: UserEntity })
@@ -24,10 +17,18 @@ export class UsersController {
     return (await this.usersService.findOneByEmail(email)).role;
   }
 
-  @Get(':id')
+  @Get()
   @ApiOkResponse({ type: UserEntity })
-  async findOneById(@Param() params: { id: string }): Promise<User> {
-    return this.usersService.findOne({ id: Number(params.id) });
+  async findOneById(@Query('firebaseId') firebaseId: string): Promise<User> {
+    console.log(firebaseId)
+    return this.usersService.findOne(firebaseId);
+  }
+
+  @Get()
+  @ApiOkResponse({ type: UserEntity, isArray: true })
+  async findAll(@Req() request: Request): Promise<User[]> {
+    console.log(request.body);
+    return this.usersService.findAll();
   }
 
   @Post('/createUser')

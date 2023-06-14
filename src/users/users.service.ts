@@ -13,8 +13,12 @@ export class UsersService {
     return this.prisma.user.findMany();
   }
 
-  async findOne(userUniqueInput: Prisma.UserWhereUniqueInput): Promise<User> {
-    return this.prisma.user.findUnique({ where: userUniqueInput });
+  async findOne(userUniqueInput: string): Promise<User> {
+    return this.prisma.user.findFirst({
+      where: {
+        firebaseId: userUniqueInput
+      }
+    });
   }
 
   async findOneByEmail(email: string): Promise<User> {

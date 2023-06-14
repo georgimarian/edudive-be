@@ -1,26 +1,41 @@
 import { Injectable } from '@nestjs/common';
-import { CreateBadgeDto } from './dto/create-badge.dto';
-import { UpdateBadgeDto } from './dto/update-badge.dto';
+import { PrismaService } from 'src/prisma.service';
+import { Badge, Prisma } from '@prisma/client';
+
 
 @Injectable()
 export class BadgesService {
-  create(createBadgeDto: CreateBadgeDto) {
-    return 'This action adds a new badge';
+  private readonly badges: Badge[];
+
+  constructor(private prisma: PrismaService) { }
+
+  async create(data: Prisma.BadgeCreateInput): Promise<Badge> {
+    return this.prisma.badge.create({ data });
   }
 
-  findAll() {
-    return `This action returns all badges`;
+  async findAll(): Promise<Badge[]> {
+    return this.prisma.badge.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} badge`;
+  async findOne(firebaseId: string): Promise<Badge> {
+    return this.prisma.badge.findFirst({
+      where: {
+        filename: firebaseId
+      }
+    });
   }
 
-  update(id: number, updateBadgeDto: UpdateBadgeDto) {
-    return `This action updates a #${id} badge`;
+  async update(params: {
+    where: Prisma.BadgeWhereUniqueInput;
+    data: Prisma.BadgeUpdateInput
+  }): Promise<Badge> {
+    const { data, where } = params;
+    return this.prisma.badge.update({
+      data, where
+    })
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} badge`;
+  async remove(where: Prisma.BadgeWhereUniqueInput): Promise<Badge> {
+    return this.prisma.badge.delete({ where });
   }
 }
