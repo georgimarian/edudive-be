@@ -22,7 +22,6 @@ export class SubjectsService {
   }
 
   async findAllBySkillId(data: Prisma.SkillWhereUniqueInput): Promise<Subject[]> {
-    console.log(data)
     return this.prisma.subject.findMany({
       where: {
         skills: {

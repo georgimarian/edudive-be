@@ -17,7 +17,6 @@ export class SkillsController {
 
   @Get()
   async findByUser(@Query("id") userId: string) {
-    console.log("userId")
     return this.skillsService.findAllByUserId(userId);
   }
 
@@ -33,7 +32,7 @@ export class SkillsController {
 
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateSkillDto: UpdateSkillDto) {
+  async update(@Query('id') id: string, @Body() updateSkillDto: UpdateSkillDto) {
     return this.skillsService.update({ where: { id: Number(id) }, data: updateSkillDto });
   }
 

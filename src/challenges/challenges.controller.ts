@@ -2,7 +2,8 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import { ChallengesService } from './challenges.service';
 import { UpdateChallengeDto } from './dto/update-challenge.dto';
 import { Challenge } from '@prisma/client';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { CreateChallengeDto } from './dto/create-challenge.dto';
 
 @Controller('challenges')
 @ApiTags('badges')
@@ -10,23 +11,33 @@ export class ChallengesController {
   constructor(private readonly challengesService: ChallengesService) { }
 
   @Post()
+  @ApiCreatedResponse({ type: CreateChallengeDto })
   async create(@Body() createChallengeDto): Promise<Challenge> {
     return this.challengesService.create(createChallengeDto);
   }
 
   @Get()
-  async findAll(@Query('firebaseId') firebaseId: string, @Query("skillId") skillId: number, @Query("filters") filters): Promise<Challenge[]> {
-    console.log(firebaseId, filters)
+  @ApiOkResponse()
+  async findAll(
+    @Query('firebaseId') firebaseId: string,
+    @Query("skillId") skillId: number,
+    @Query("filters") filters
+  ): Promise<Challenge[]> {
     return this.challengesService.findAllByUser(firebaseId, Number(skillId), filters);
   }
 
   @Get(':id')
+  @ApiOkResponse()
   async findOne(@Param('id') id: string): Promise<Challenge> {
     return this.challengesService.findOne(Number(id));
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateChallengeDto: UpdateChallengeDto): Promise<Challenge> {
+  @ApiOkResponse({ type: UpdateChallengeDto })
+  async update(
+    @Param('id') id: string,
+    @Body() updateChallengeDto: UpdateChallengeDto
+  ): Promise<Challenge> {
     return this.challengesService.update(Number(id), updateChallengeDto);
   }
 

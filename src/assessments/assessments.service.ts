@@ -38,7 +38,6 @@ export class AssessmentsService {
     })
   }
 
-  // TODO: see here
   async findByUser(userId: string, filters = {}): Promise<Assessment[]> {
     return this.prisma.assessment.findMany({
       where: {

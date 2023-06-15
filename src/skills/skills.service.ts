@@ -28,7 +28,7 @@ export class SkillsService {
           }
         }
       },
-      include: { StudentToSkill: true }
+      // include: { StudentToSkill: true }
     });
   }
 

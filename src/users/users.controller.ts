@@ -20,14 +20,12 @@ export class UsersController {
   @Get()
   @ApiOkResponse({ type: UserEntity })
   async findOneById(@Query('firebaseId') firebaseId: string): Promise<User> {
-    console.log(firebaseId)
     return this.usersService.findOne(firebaseId);
   }
 
   @Get()
   @ApiOkResponse({ type: UserEntity, isArray: true })
-  async findAll(@Req() request: Request): Promise<User[]> {
-    console.log(request.body);
+  async findAll(): Promise<User[]> {
     return this.usersService.findAll();
   }
 
@@ -37,7 +35,7 @@ export class UsersController {
     try {
       return this.usersService.createUser(userData);
     } catch (e) {
-      console.log(e)
+      return (e)
     }
   }
 }

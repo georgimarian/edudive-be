@@ -1,8 +1,7 @@
-import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { MasterProgramme } from '@prisma/client';
-import { Request } from 'express';
 import { MasterProgrammeService } from '../masterProgrammes/masterProgrammes.service';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('masterProgrammes')
 @ApiTags('masterProgrammes')
@@ -10,15 +9,15 @@ export class MasterProgrammeController {
     constructor(private masterProgrammeService: MasterProgrammeService) { }
 
     @Get()
-    async findAll(@Req() request: Request): Promise<MasterProgramme[]> {
-        console.log(request.body);
+    @ApiOkResponse()
+    async findAll(): Promise<MasterProgramme[]> {
         return this.masterProgrammeService.findAll();
     }
 
     @Get(':id')
+    @ApiOkResponse()
     async findOne(@Param('id') id: string): Promise<MasterProgramme> {
         try {
-            console.log(id)
             return this.masterProgrammeService.findOne({ id: Number(id) });
         } catch (e) {
             return e
@@ -30,7 +29,7 @@ export class MasterProgrammeController {
         try {
             return this.masterProgrammeService.createMasterProgramme(masterData);
         } catch (e) {
-            console.log(e)
+            return (e)
         }
     }
 }

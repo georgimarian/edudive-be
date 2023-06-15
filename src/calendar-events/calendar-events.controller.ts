@@ -30,8 +30,14 @@ export class CalendarEventsController {
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateCalendarEventDto: UpdateCalendarEventDto) {
-    return this.calendarEventsService.update({ where: { id: Number(id) }, data: updateCalendarEventDto });
+  async update(
+    @Param('id') id: string,
+    @Body() updateCalendarEventDto: UpdateCalendarEventDto
+  ) {
+    return this.calendarEventsService.update({
+      where: { id: Number(id) },
+      data: updateCalendarEventDto
+    });
   }
 
   @Delete(':id')

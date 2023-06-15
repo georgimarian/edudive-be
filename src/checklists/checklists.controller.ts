@@ -31,7 +31,10 @@ export class ChecklistsController {
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateChecklistDto: UpdateChecklistDto) {
+  async update(
+    @Param('id') id: string,
+    @Body() updateChecklistDto: UpdateChecklistDto
+  ) {
     return this.checklistsService.update(+id, updateChecklistDto);
   }
 

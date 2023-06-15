@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Delete, UseInterceptors, UploadedFile, Post } from '@nestjs/common';
+import { Controller, Get, Param, Delete, UseInterceptors, UploadedFile, Post, Query, Body } from '@nestjs/common';
 import { NlpService } from './nlp.service';
 import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -9,7 +9,6 @@ import { diskStorage } from 'multer';
 @ApiTags('nlp')
 export class NlpController {
   constructor(private readonly nlpService: NlpService) { }
-
 
 
   @Get()
@@ -28,20 +27,33 @@ export class NlpController {
     return this.nlpService.remove(+id);
   }
 
+  @Post()
+  postInformation(
+    @Query('userId') id: string,
+    @Body() data: {
+      subjects: string[];
+      hardSkills: string;
+      softSkills: string;
+    }
+  ) {
+    const { subjects, hardSkills, softSkills } = data;
+    this.nlpService.saveUserPreferences(id, softSkills, hardSkills);
+  }
 
-  //   @Post('/file')
-  //   @UseInterceptors(FileInterceptor('file', {
-  //     storage: diskStorage({
-  //       destination: './uploadedFiles'
-  //     })
-  //   }))
-  //   @ApiConsumes('multipart/form-data')
-  //   @ApiBody({
-  //     description: 'Letter of intent',
-  //     type: FileUploadDto,
+
+  @Post('/file')
+  // @UseInterceptors(FileInterceptor('file', {
+  //   storage: diskStorage({
+  //     destination: './uploadedFiles'
   //   })
-  //   async uploadFile(@UploadedFile() file: Express.Multer.File) {
-  //     console.log(file)
-  //   }
-  // 
+  // }))
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description: 'Letter of intent',
+    type: FileUploadDto,
+  })
+  async uploadFile(@UploadedFile() file: Express.Multer.File) {
+    console.log(file)
+  }
+
 }
