@@ -98,12 +98,15 @@ model Skill {
   SkillOnChecklistStep SkillOnChecklistStep[]
   color                String?
   Challenge            Challenge[]
+  predefinedSkill      PredefinedSkill?       @relation(fields: [predefinedSkillId], references: [id])
+  predefinedSkillId    Int?
 }
 
 model PredefinedSkill {
-  id   Int       @id @default(autoincrement())
-  name String?
-  type SkillType
+  id    Int       @id @default(autoincrement())
+  name  String?
+  type  SkillType
+  Skill Skill[]
 }
 
 model SubjectsOnSkills {
