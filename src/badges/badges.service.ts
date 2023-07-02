@@ -17,6 +17,20 @@ export class BadgesService {
     return this.prisma.badge.findMany();
   }
 
+  async findAllByUser(firebaseId: string): Promise<Badge[]> {
+    return this.prisma.badge.findMany({
+      where: {
+        StudentOnBadge: {
+          some: {
+            student: {
+              firebaseId: firebaseId
+            }
+          }
+        }
+      }
+    });
+  }
+
   async findOne(firebaseId: string): Promise<Badge> {
     return this.prisma.badge.findFirst({
       where: {

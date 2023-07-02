@@ -29,6 +29,7 @@ model User {
   subjects                 UsersOnSubject[]
   StudentOnMasterProgramme StudentOnMasterProgramme[]
   challenges               ChallengeOnStudent[]
+  StudentOnBadge           StudentOnBadge[]
 }
 
 model MasterProgramme {
@@ -73,10 +74,20 @@ enum SkillType {
 }
 
 model Badge {
-  id          Int     @id @default(autoincrement())
-  name        String
-  iconName    String
-  description String?
+  id             Int              @id @default(autoincrement())
+  name           String
+  iconName       String
+  description    String?
+  StudentOnBadge StudentOnBadge[]
+}
+
+model StudentOnBadge {
+  student   User  @relation(fields: [studentId], references: [id])
+  studentId Int
+  badge     Badge @relation(fields: [badgeId], references: [id])
+  badgeId   Int
+
+  @@id([studentId, badgeId])
 }
 
 model Challenge {

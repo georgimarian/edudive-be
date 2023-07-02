@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { BadgesService } from './badges.service';
 import { CreateBadgeDto } from './dto/create-badge.dto';
 import { UpdateBadgeDto } from './dto/update-badge.dto';
@@ -17,16 +17,17 @@ export class BadgesController {
   }
 
   @Get()
+  @ApiOkResponse({ type: CreateBadgeDto })
+  async findOne(@Query('firebaseId') id: string): Promise<Badge[]> {
+    return this.badgesService.findAllByUser(id);
+  }
+
+  @Get()
   @ApiOkResponse({ type: CreateBadgeDto, isArray: true })
   async findAll(): Promise<Badge[]> {
     return this.badgesService.findAll();
   }
 
-  @Get(':id')
-  @ApiOkResponse({ type: CreateBadgeDto })
-  async findOne(@Param('id') id: string): Promise<Badge> {
-    return this.badgesService.findOne(id);
-  }
 
   @Patch(':id')
   async update(
