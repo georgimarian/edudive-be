@@ -58,7 +58,7 @@ export class SkillsController {
 
     return ({
       nodes: nodes,
-      links: links.filter(link => nodeIds.includes(link.source) || nodeIds.includes(link.target))
+      links: links.filter(link => nodeIds.includes(link.source) && nodeIds.includes(link.target))
     });
   }
 
