@@ -17,7 +17,7 @@ export class SkillsService {
   }
 
   // TODO: see here
-  async findAllByUserId(userId: string, detailed: boolean) {
+  async findAllByUserId(userId: string, detailed: boolean): Promise<(Skill & { steps?: { step: { id: number, description: string } }[] })[]> {
     return detailed ? this.prisma.skill.findMany({
       where: {
         StudentToSkill: {

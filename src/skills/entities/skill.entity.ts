@@ -3,6 +3,8 @@ import { Skill, SkillType } from "@prisma/client";
 
 export class SkillEntity implements Skill {
     @ApiProperty()
+    predefinedSkillId: number;
+    @ApiProperty()
     id: number;
 
     @ApiProperty()

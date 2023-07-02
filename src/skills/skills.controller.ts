@@ -2,7 +2,6 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import { SkillsService } from './skills.service';
 import { CreateSkillDto } from './dto/create-skill.dto';
 import { UpdateSkillDto } from './dto/update-skill.dto';
-import { Skill } from '@prisma/client';
 import { ApiTags } from '@nestjs/swagger';
 
 @Controller('skills')
@@ -17,8 +16,17 @@ export class SkillsController {
 
   @Get()
   async findByUser(@Query("id") userId: string, @Query("detailed") detailed = false) {
-    console.log(detailed)
-    return this.skillsService.findAllByUserId(userId, detailed);
+    if (!detailed)
+      return this.skillsService.findAllByUserId(userId, detailed);
+    const result = await this.skillsService.findAllByUserId(userId, detailed);
+    return result.map(skill => (
+      {
+        id: skill.id,
+        color: skill.color,
+        name: skill.name,
+        type: skill.type,
+        steps: skill.steps.map(({ step }) => step)
+      }))
   }
 
   @Get('/findOne')

@@ -29,8 +29,14 @@ export class SubjectsController {
   }
 
   @Get('byUser')
-  async findAllByUser(@Query("firebaseId") userId: string): Promise<Subject[]> {
-    return this.subjectsService.findAllByUserId(userId);
+  async findAllByUser(@Query("firebaseId") userId: string) {
+    const result = await this.subjectsService.findAllByUserId(userId);
+    return result.map(subject => ({
+      descriptiveLink: subject.descriptiveLink,
+      id: subject.id,
+      name: subject.name,
+      color: subject.users[0]?.color || ''
+    }))
   }
 
   @Get(':id')

@@ -34,7 +34,7 @@ export class SubjectsService {
     });
   }
 
-  async findAllByUserId(firebaseID: string): Promise<Subject[]> {
+  async findAllByUserId(firebaseID: string): Promise<(Subject & { users?: { color?: string }[] })[]> {
     return this.prisma.subject.findMany({
       where: {
         users: {
