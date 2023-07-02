@@ -16,13 +16,41 @@ export class SkillsController {
   }
 
   @Get()
-  async findByUser(@Query("id") userId: string) {
-    return this.skillsService.findAllByUserId(userId);
+  async findByUser(@Query("id") userId: string, @Query("detailed") detailed = false) {
+    console.log(detailed)
+    return this.skillsService.findAllByUserId(userId, detailed);
   }
 
-  @Get(':id')
-  async findOne(@Param('id') id: string): Promise<Skill> {
-    return this.skillsService.findOne({ id: Number(id) });
+  @Get('/findOne')
+  async findOne(@Query('id') id: string) {
+    const result = await this.skillsService.findOne({ id: Number(id) });
+
+    const nodes = result.steps.map(({ step }, idx) => ({
+      id: step.id,
+      name: step.description,
+      completed: idx === result.steps.length - 1 ? false : true,
+    }))
+
+    const links = result.steps.reduce((acc, { step }) => {
+      const nextStepsMap = step.nextSteps.map((nextStep) => ({
+        source: step?.id,
+        target: nextStep?.id,
+        subject: step?.subjects?.[0] ? step.subjects[0].name : '',
+      }));
+      const prevStepsMap = step.previousSteps.map((nextStep) => ({
+        source: step?.id,
+        target: nextStep?.id,
+        subject: step?.subjects?.[0] ? step.subjects[0].name : '',
+      }));
+      return [...acc, ...nextStepsMap, ...prevStepsMap];
+    }, []);
+
+    const nodeIds = nodes.map(node => node.id)
+
+    return ({
+      nodes: nodes,
+      links: links.filter(link => nodeIds.includes(link.id))
+    });
   }
 
   @Get()

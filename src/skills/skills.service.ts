@@ -17,8 +17,8 @@ export class SkillsService {
   }
 
   // TODO: see here
-  async findAllByUserId(userId: string) {
-    return this.prisma.skill.findMany({
+  async findAllByUserId(userId: string, detailed: boolean) {
+    return detailed ? this.prisma.skill.findMany({
       where: {
         StudentToSkill: {
           some: {
@@ -28,12 +28,48 @@ export class SkillsService {
           }
         }
       },
-      // include: { StudentToSkill: true }
+      include: {
+        steps: {
+          // include: {
+          //   step: true,
+          // },
+          select: {
+            step: true,
+          }
+        }
+      }
+    }) : this.prisma.skill.findMany({
+      where: {
+        StudentToSkill: {
+          some: {
+            student: {
+              firebaseId: userId
+            }
+          }
+        }
+      },
     });
   }
 
-  async findOne(skillUniqueInput: Prisma.SkillWhereUniqueInput): Promise<Skill> {
-    return this.prisma.skill.findUnique({ where: skillUniqueInput });
+  async findOne(skillUniqueInput: Prisma.SkillWhereUniqueInput) {
+    return this.prisma.skill.findUnique({
+      where: skillUniqueInput,
+      include: {
+        steps: {
+          select: {
+            step: {
+              select: {
+                id: true,
+                description: true,
+                nextSteps: true,
+                previousSteps: true,
+                subjects: true,
+              }
+            }
+          }
+        },
+      }
+    });
   }
 
   async update(params: {

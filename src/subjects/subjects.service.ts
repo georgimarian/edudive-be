@@ -34,6 +34,21 @@ export class SubjectsService {
     });
   }
 
+  async findAllByUserId(firebaseID: string): Promise<Subject[]> {
+    return this.prisma.subject.findMany({
+      where: {
+        users: {
+          some: {
+            user: {
+              firebaseId: firebaseID
+            }
+          }
+        }
+      },
+      include: { skills: true, users: { select: { color: true } } }
+    });
+  }
+
   async update(params: {
     where: Prisma.SubjectWhereUniqueInput,
     data: Prisma.SubjectUpdateInput
