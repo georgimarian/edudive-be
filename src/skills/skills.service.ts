@@ -41,9 +41,6 @@ export class SkillsService {
       },
       include: {
         steps: {
-          // include: {
-          //   step: true,
-          // },
           select: {
             step: true,
           }

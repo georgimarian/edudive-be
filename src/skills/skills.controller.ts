@@ -15,9 +15,10 @@ export class SkillsController {
   }
 
   @Get()
-  async findByUser(@Query("id") userId: string, @Query("detailed") detailed = false) {
-    if (!detailed)
+  async findByUser(@Query("userId") userId: string, @Query("detailed") detailed = false) {
+    if (!detailed) {
       return this.skillsService.findAllByUserId(userId, detailed);
+    }
     const result = await this.skillsService.findAllByUserId(userId, detailed);
     return result.map(skill => (
       {
@@ -69,7 +70,6 @@ export class SkillsController {
 
   @Patch('/update')
   async update(@Query('id') id: string, @Query('firebaseId') firebaseId: string, @Body() updateSkillDto: UpdateSkillDto) {
-    console.log(id, firebaseId)
     return this.skillsService.update({
       where: { id: Number(id) },
       data: updateSkillDto,

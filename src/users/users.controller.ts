@@ -1,5 +1,4 @@
 import { Body, Controller, Get, Post, Query, Req } from '@nestjs/common';
-import { Request } from 'express';
 import { UsersService } from 'src/users/users.service';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { UserEntity } from './entities/user.entity';
@@ -31,7 +30,7 @@ export class UsersController {
 
   @Post('/createUser')
   @ApiCreatedResponse({ type: UserEntity })
-  async createUser(@Body() userData: { firstName: string, lastName: string, email: string }): Promise<User> {
+  async createUser(@Body() userData: { firstName: string, lastName: string, email: string, firebaseId: string }): Promise<User> {
     try {
       return this.usersService.createUser(userData);
     } catch (e) {

@@ -30,19 +30,33 @@ export class NlpService {
 
   async saveUserPreferences(studentId: string, softSkills: string, hardSkills: string) {
     const student = await this.prisma.user.findFirst({ where: { firebaseId: studentId } })
-    const skill = await this.prisma.skill.findFirst({ where: { name: softSkills } });
-    this.prisma.studentOnSkill.create({
+    const soft = await this.prisma.skill.findFirst({ where: { predefinedSkill: { name: softSkills } } });
+    const hard = await this.prisma.skill.findFirst({ where: { predefinedSkill: { name: hardSkills } } });
+    const s = await this.prisma.studentOnSkill.create({
       data: {
         student: {
           connect: { id: student.id }
         },
         skill: {
-          connect: { id: skill.id }
+          connect: { id: soft.id },
         },
         currentStepId: 0,
         percentageToCompletion: 0,
       }
     });
+    const h = await this.prisma.studentOnSkill.create({
+      data: {
+        student: {
+          connect: { id: student.id }
+        },
+        skill: {
+          connect: { id: hard.id },
+        },
+        currentStepId: 0,
+        percentageToCompletion: 0,
+      }
+    });
+    return [s, h]
   }
 
   fileUpload() {

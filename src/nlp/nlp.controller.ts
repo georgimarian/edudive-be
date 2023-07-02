@@ -28,8 +28,8 @@ export class NlpController {
   }
 
   @Post()
-  postInformation(
-    @Query('userId') id: string,
+  async postInformation(
+    @Query('firebaseId') id: string,
     @Body() data: {
       subjects: string[];
       hardSkills: string;
@@ -37,7 +37,7 @@ export class NlpController {
     }
   ) {
     const { subjects, hardSkills, softSkills } = data;
-    this.nlpService.saveUserPreferences(id, softSkills, hardSkills);
+    return await this.nlpService.saveUserPreferences(id, softSkills, hardSkills);
   }
 
 
