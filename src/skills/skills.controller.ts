@@ -46,12 +46,12 @@ export class SkillsController {
         target: nextStep?.id,
         subject: step?.subjects?.[0] ? step.subjects[0].name : '',
       }));
-      const prevStepsMap = step.previousSteps.map((nextStep) => ({
-        source: step?.id,
-        target: nextStep?.id,
-        subject: step?.subjects?.[0] ? step.subjects[0].name : '',
-      }));
-      return [...acc, ...nextStepsMap, ...prevStepsMap];
+      // const prevStepsMap = step.previousSteps.map((nextStep) => ({
+      //   source: step?.id,
+      //   target: nextStep?.id,
+      //   subject: step?.subjects?.[0] ? step.subjects[0].name : '',
+      // }));
+      return [...acc, ...nextStepsMap];
     }, []);
 
     const nodeIds = nodes.map(node => node.id)
