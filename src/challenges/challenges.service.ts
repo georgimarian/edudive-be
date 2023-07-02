@@ -14,7 +14,7 @@ export class ChallengesService {
     return this.prisma.challenge.create({ data });
   }
 
-  async findAllByUser(firebaseId: string, skillId: number, filters = {}) {
+  async findAllByUser(firebaseId: string, skillId: number, filters = {}): Promise<(Challenge & { skill?: { color: string } })[]> {
     if (skillId > 0)
       return this.prisma.challenge.findMany({
         where: {

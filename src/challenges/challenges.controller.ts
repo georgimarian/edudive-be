@@ -22,8 +22,14 @@ export class ChallengesController {
     @Query('firebaseId') firebaseId: string,
     @Query("skillId") skillId: number,
     @Query("filters") filters
-  ): Promise<Challenge[]> {
-    return this.challengesService.findAllByUser(firebaseId, Number(skillId), filters);
+  ) {
+    const result = await this.challengesService.findAllByUser(firebaseId, Number(skillId), filters);
+    return result.map(challenge => ({
+      completed: challenge.completed,
+      id: challenge.id,
+      name: challenge.name,
+      color: challenge.skill?.color || ''
+    }));
   }
 
   @Get(':id')
