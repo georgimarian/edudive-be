@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { Skill, Prisma } from '@prisma/client';
+import { Skill, Prisma, StudentOnSkill } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
+import { UpdateSkillDto } from './dto/update-skill.dto';
 
 @Injectable()
 export class SkillsService {
@@ -17,7 +18,17 @@ export class SkillsService {
   }
 
   // TODO: see here
-  async findAllByUserId(userId: string, detailed: boolean): Promise<(Skill & { steps?: { step: { id: number, description: string } }[] })[]> {
+  async findAllByUserId(userId: string, detailed: boolean): Promise<
+    (
+      Skill & {
+        steps?: { step: { id: number, description: string } }[]
+      } & {
+        StudentToSkill?: {
+          color: string;
+        }
+      }
+    )[]
+  > {
     return detailed ? this.prisma.skill.findMany({
       where: {
         StudentToSkill: {
@@ -35,6 +46,11 @@ export class SkillsService {
           // },
           select: {
             step: true,
+          }
+        },
+        StudentToSkill: {
+          select: {
+            color: true
           }
         }
       }
@@ -74,10 +90,21 @@ export class SkillsService {
 
   async update(params: {
     where: Prisma.SkillWhereUniqueInput,
-    data: Prisma.SkillUpdateInput
-  }): Promise<Skill> {
-    const { data, where } = params;
-    return this.prisma.skill.update({ data, where });
+    data: UpdateSkillDto,
+    firebaseId: string,
+  }): Promise<StudentOnSkill> {
+    const { data, where, firebaseId } = params;
+    const student = await this.prisma.user.findFirst({ where: { firebaseId: firebaseId } })
+
+    console.log('student', student);
+    return this.prisma.studentOnSkill.update({
+      where: {
+        studentId_skillId: { studentId: student.id, skillId: where.id }
+      },
+      data: {
+        color: data.color
+      }
+    });
   }
 
   async remove(where: Prisma.SkillWhereUniqueInput): Promise<Skill> {

@@ -22,7 +22,7 @@ export class SkillsController {
     return result.map(skill => (
       {
         id: skill.id,
-        color: skill.color,
+        color: skill.StudentToSkill.color,
         name: skill.name,
         type: skill.type,
         steps: skill.steps.map(({ step }) => step)
@@ -67,9 +67,14 @@ export class SkillsController {
   }
 
 
-  @Patch(':id')
-  async update(@Query('id') id: string, @Body() updateSkillDto: UpdateSkillDto) {
-    return this.skillsService.update({ where: { id: Number(id) }, data: updateSkillDto });
+  @Patch('/update')
+  async update(@Query('id') id: string, @Query('firebaseId') firebaseId: string, @Body() updateSkillDto: UpdateSkillDto) {
+    console.log(id, firebaseId)
+    return this.skillsService.update({
+      where: { id: Number(id) },
+      data: updateSkillDto,
+      firebaseId: firebaseId
+    });
   }
 
   @Delete(':id')

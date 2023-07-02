@@ -20,7 +20,7 @@ export class BadgesService {
   async findOne(firebaseId: string): Promise<Badge> {
     return this.prisma.badge.findFirst({
       where: {
-        filename: firebaseId
+        iconName: firebaseId
       }
     });
   }
