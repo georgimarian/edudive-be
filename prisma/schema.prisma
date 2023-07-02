@@ -96,7 +96,6 @@ model Skill {
   steps                SkillOnStep[]
   StudentToSkill       StudentOnSkill[]
   SkillOnChecklistStep SkillOnChecklistStep[]
-  color                String?
   Challenge            Challenge[]
   predefinedSkill      PredefinedSkill?       @relation(fields: [predefinedSkillId], references: [id])
   predefinedSkillId    Int?
@@ -185,12 +184,13 @@ model CalendarEvent {
 }
 
 model StudentOnSkill {
-  student                User  @relation(fields: [studentId], references: [id])
+  student                User    @relation(fields: [studentId], references: [id])
   studentId              Int
-  skill                  Skill @relation(fields: [skillId], references: [id])
+  skill                  Skill   @relation(fields: [skillId], references: [id])
   skillId                Int
   currentStepId          Int
   percentageToCompletion Int
+  color                  String?
 
   @@id([studentId, skillId])
 }
