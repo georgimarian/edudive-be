@@ -28,7 +28,7 @@ export class ChallengesController {
       completed: challenge.completed,
       id: challenge.id,
       name: challenge.name,
-      color: challenge.skill?.color || ''
+      color: challenge.skill?.StudentToSkill?.[0].color || ''
     }));
   }
 

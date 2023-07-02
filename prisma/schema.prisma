@@ -75,7 +75,7 @@ enum SkillType {
 model Badge {
   id          Int     @id @default(autoincrement())
   name        String
-  filename    String
+  iconName    String
   description String?
 }
 
