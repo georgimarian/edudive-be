@@ -28,10 +28,13 @@ export class ChecklistsService {
     return this.prisma.checklist.findFirst({ where: { id: id } });
   }
 
-  async update(id: number, updateChecklistDto: UpdateChecklistDto): Promise<Checklist> {
+  async update(id: number, checked: boolean): Promise<Checklist> {
+    console.log(id, checked)
     return this.prisma.checklist.update({
       where: { id: id },
-      data: updateChecklistDto
+      data: {
+        checked: checked
+      }
     });
   }
 

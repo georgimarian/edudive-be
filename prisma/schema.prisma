@@ -66,6 +66,7 @@ model Checklist {
   title       String
   description String?
   skillId     Int
+  checked     Boolean @default(false)
 }
 
 enum SkillType {

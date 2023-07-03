@@ -30,12 +30,13 @@ export class ChecklistsController {
     return this.checklistsService.findOne(+id);
   }
 
-  @Patch(':id')
+  @Patch('/update')
   async update(
-    @Param('id') id: string,
-    @Body() updateChecklistDto: UpdateChecklistDto
+    @Query('id') id: string,
+    @Query('checked') checked: boolean
   ) {
-    return this.checklistsService.update(+id, updateChecklistDto);
+    console.log(id, checked)
+    return this.checklistsService.update(Number(id), Boolean(checked));
   }
 
   @Delete(':id')

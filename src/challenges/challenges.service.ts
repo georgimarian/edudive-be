@@ -14,7 +14,7 @@ export class ChallengesService {
     return this.prisma.challenge.create({ data });
   }
 
-  async findAllByUser(firebaseId: string, skillId: number, filters = {})
+  async findAllByUser(firebaseId: string, skillId: number, filters: any = {})
     : Promise<(
       Challenge & {
         skill?: {
@@ -36,8 +36,13 @@ export class ChallengesService {
                   }
                 }
               }
+            },
+            {
+              completed: filters.completed
+                ? Boolean(filters.completed)
+                : (filters['not_completed']
+                  ? !Boolean(filters['not_completed']) : undefined)
             }],
-          completed: false,
         }
       });
 
@@ -62,9 +67,14 @@ export class ChallengesService {
               }
             }
           }
-        }]
-        ,
-        completed: false,
+        },
+        {
+          completed: filters.completed
+            ? Boolean(filters.completed)
+            : (filters['not_completed']
+              ? !Boolean(filters['not_completed']) : undefined)
+        }
+        ],
       },
       include: { skill: { select: { StudentToSkill: { select: { color: true } } } } }
     });
