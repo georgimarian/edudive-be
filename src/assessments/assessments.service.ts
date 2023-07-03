@@ -20,7 +20,7 @@ export class AssessmentsService {
     return this.prisma.assessment.findUnique({ where: assessmentUniqueInput });
   }
 
-  async findBySkill(skillId: number, filters): Promise<Assessment[]> {
+  async findBySkill(skillId: number, firebaseId: string, filters: any = {}): Promise<Assessment[]> {
     return this.prisma.assessment.findMany({
       where: {
         AND: [
@@ -30,6 +30,23 @@ export class AssessmentsService {
                 some: {
                   skill: {
                     id: skillId
+                  },
+                }
+              }
+            }
+          },
+          {
+            Subject: {
+              skills: {
+                some: {
+                  skill: {
+                    StudentToSkill: {
+                      some: {
+                        student: {
+                          firebaseId: firebaseId
+                        }
+                      }
+                    }
                   }
                 }
               }

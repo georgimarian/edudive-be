@@ -35,7 +35,7 @@ export class AssessmentsController {
     if (completed)
       return this.assessmentsService.findByStatus(Boolean(completed));
     if (skillId)
-      return this.assessmentsService.findBySkill(Number(skillId), filters);
+      return this.assessmentsService.findBySkill(Number(skillId), firebaseId, filters);
     if (firebaseId)
       return this.assessmentsService.findByUser(firebaseId, { completed: false });
   }
