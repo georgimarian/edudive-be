@@ -6,6 +6,12 @@ import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { Assessment } from '@prisma/client';
 import { AssessmentEntity } from './entities/assessment.entity';
 
+interface AssessmentFilter {
+  completed?: boolean;
+  not_completed?: boolean;
+  all?: boolean;
+  coming_up?: boolean;
+}
 @Controller('assessments')
 @ApiTags('assessments')
 export class AssessmentsController {
@@ -21,14 +27,15 @@ export class AssessmentsController {
   @ApiOkResponse({ type: AssessmentEntity })
   async findByStatus
     (
-      @Query('subject') subject: string,
+      @Query('skill') skillId: string,
       @Query('completed') completed: boolean,
-      @Query('firebaseId') firebaseId: string
+      @Query('firebaseId') firebaseId: string,
+      @Query('filters') filters: AssessmentFilter
     ): Promise<Assessment[]> {
     if (completed)
       return this.assessmentsService.findByStatus(Boolean(completed));
-    if (subject)
-      return this.assessmentsService.findBySubject(subject);
+    if (skillId)
+      return this.assessmentsService.findBySkill(Number(skillId), filters);
     if (firebaseId)
       return this.assessmentsService.findByUser(firebaseId, { completed: false });
   }

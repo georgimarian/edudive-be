@@ -20,12 +20,28 @@ export class AssessmentsService {
     return this.prisma.assessment.findUnique({ where: assessmentUniqueInput });
   }
 
-  async findBySubject(subject: string): Promise<Assessment[]> {
+  async findBySkill(skillId: number, filters): Promise<Assessment[]> {
     return this.prisma.assessment.findMany({
       where: {
-        Subject: {
-          name: subject
-        }
+        AND: [
+          {
+            Subject: {
+              skills: {
+                some: {
+                  skill: {
+                    id: skillId
+                  }
+                }
+              }
+            }
+          },
+          {
+            completed: filters.completed
+              ? Boolean(filters.completed)
+              : (filters['not_completed']
+                ? !Boolean(filters['not_completed']) : undefined)
+          }
+        ]
       }
     })
   }
