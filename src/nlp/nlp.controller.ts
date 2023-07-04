@@ -3,7 +3,6 @@ import { NlpService } from './nlp.service';
 import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FileUploadDto } from './dto/fileUpload.dto';
-import { diskStorage } from 'multer';
 
 @Controller('nlp')
 @ApiTags('nlp')
@@ -42,18 +41,16 @@ export class NlpController {
 
 
   @Post('/file')
-  // @UseInterceptors(FileInterceptor('file', {
-  //   storage: diskStorage({
-  //     destination: './uploadedFiles'
-  //   })
-  // }))
+  @UseInterceptors(FileInterceptor('file',
+  ))
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     description: 'Letter of intent',
     type: FileUploadDto,
   })
-  async uploadFile(@UploadedFile() file: Express.Multer.File) {
-    console.log(file)
+  async uploadFile(@Query('firebaseId') id: string, @UploadedFile() file: Express.Multer.File) {
+    const addedSkills = this.nlpService.uploadFile(file, id);
+    return addedSkills;
   }
 
 }

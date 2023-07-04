@@ -17,7 +17,6 @@ export class SkillsService {
     return this.prisma.skill.findMany();
   }
 
-  // TODO: see here
   async findAllByUserId(userId: string, detailed: boolean): Promise<
     (
       Skill & {
